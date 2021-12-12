@@ -23,17 +23,15 @@ public class KakaopayAccount {
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private KakaopayAccountStatus status;
+    private KakaopayAccountStatus status = KakaopayAccountStatus.NORMAL;;
 
     @Transient
-    private MoneyTransferConstraint constraint;
+    private MoneyTransferConstraint constraint = new MoneyTransferConstraintComposite(
+            new SenderBalanceConstraint(), new LimitedMoneyConstraint(), new ReceiverStatusConstraint()
+    );;
 
     public KakaopayAccount(Money money) {
         this.balance = money;
-        this.status = KakaopayAccountStatus.NORMAL;
-        this.constraint = new MoneyTransferConstraintComposite(
-                new SenderBalanceConstraint(), new LimitedMoneyConstraint(), new ReceiverStatusConstraint()
-        );
     }
 
     public void transferTo(KakaopayAccount receiver, Money money) {
