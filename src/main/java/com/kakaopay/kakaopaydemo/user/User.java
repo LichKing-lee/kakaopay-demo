@@ -1,6 +1,7 @@
 package com.kakaopay.kakaopaydemo.user;
 
 import com.kakaopay.kakaopaydemo.kakaopayaccount.KakaopayAccount;
+import com.kakaopay.kakaopaydemo.kakaopayaccount.Money;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -24,5 +25,9 @@ public class User {
 
     public User(KakaopayAccount kakaopayAccount) {
         this.kakaopayAccount = kakaopayAccount;
+    }
+
+    public void transferMoney(User receiver, Money money) {
+        this.kakaopayAccount.transferTo(receiver.kakaopayAccount, money);
     }
 }

@@ -1,6 +1,5 @@
 package com.kakaopay.kakaopaydemo.kakaopayaccount;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -15,7 +14,7 @@ class KakaopayAccountTest {
         var receiver = new KakaopayAccount(new Money(500));
 
         // when
-        sender.transfer(receiver, new Money(700));
+        sender.transferTo(receiver, new Money(700));
 
         // then
         assertThat(sender.getBalance()).isEqualTo(new Money(300));
@@ -29,7 +28,7 @@ class KakaopayAccountTest {
         var receiver = new KakaopayAccount(new Money(500));
 
         // when then
-        assertThatThrownBy(() -> sender.transfer(receiver, new Money(1200)))
+        assertThatThrownBy(() -> sender.transferTo(receiver, new Money(1200)))
                 .isExactlyInstanceOf(IllegalArgumentException.class);
     }
 
@@ -40,7 +39,7 @@ class KakaopayAccountTest {
         var receiver = new KakaopayAccount(new Money(500));
 
         // when then
-        assertThatThrownBy(() -> sender.transfer(receiver, new Money(10001)))
+        assertThatThrownBy(() -> sender.transferTo(receiver, new Money(10001)))
                 .isExactlyInstanceOf(IllegalArgumentException.class);
     }
 
@@ -52,7 +51,7 @@ class KakaopayAccountTest {
         receiver.beDormancy();
 
         // when then
-        assertThatThrownBy(() -> sender.transfer(receiver, new Money(10000)))
+        assertThatThrownBy(() -> sender.transferTo(receiver, new Money(10000)))
                 .isExactlyInstanceOf(IllegalStateException.class);
     }
 }

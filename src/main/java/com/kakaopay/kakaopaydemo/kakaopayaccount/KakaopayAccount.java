@@ -29,7 +29,7 @@ public class KakaopayAccount {
         this.status = KakaopayAccountStatus.NORMAL;
     }
 
-    public void transfer(KakaopayAccount receiver, Money money) {
+    public void transferTo(KakaopayAccount receiver, Money money) {
         if(this.balance.isLessThan(money)) {
             throw new IllegalArgumentException();
         }
