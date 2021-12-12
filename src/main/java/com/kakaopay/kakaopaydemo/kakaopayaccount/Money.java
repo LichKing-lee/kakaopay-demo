@@ -1,14 +1,16 @@
 package com.kakaopay.kakaopaydemo.kakaopayaccount;
 
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @RequiredArgsConstructor
 @EqualsAndHashCode
 @ToString
 public class Money {
     private final long value;
+
+    long getValue() {
+        return value;
+    }
 
     public Money plus(Money money) {
         return new Money(this.value + money.value);
