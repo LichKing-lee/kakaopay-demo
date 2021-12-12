@@ -19,4 +19,8 @@ public class Money {
     public Money minus(Money money) {
         return new Money(this.value - money.value);
     }
+
+    public boolean isLessThan(Money money) {
+        return value < money.value;
+    }
 }

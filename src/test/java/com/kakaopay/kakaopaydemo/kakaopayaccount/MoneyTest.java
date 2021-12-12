@@ -1,6 +1,8 @@
 package com.kakaopay.kakaopaydemo.kakaopayaccount;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,5 +31,30 @@ class MoneyTest {
 
         // then
         assertThat(actual).isEqualTo(new Money(500));
+    }
+
+    @Test
+    void 인자보다_작은금액이면_true() {
+        // given
+        var money = new Money(500);
+
+        // when
+        boolean actual = money.isLessThan(new Money(700));
+
+        // then
+        assertThat(actual).isTrue();
+    }
+
+    @ParameterizedTest
+    @ValueSource(longs = {500, 300})
+    void 인자보다_작거나_같은금액이면_false(long value) {
+        // given
+        var money = new Money(500);
+
+        // when
+        boolean actual = money.isLessThan(new Money(value));
+
+        // then
+        assertThat(actual).isFalse();
     }
 }
