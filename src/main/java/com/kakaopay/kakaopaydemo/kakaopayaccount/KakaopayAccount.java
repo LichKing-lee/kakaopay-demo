@@ -1,5 +1,6 @@
 package com.kakaopay.kakaopaydemo.kakaopayaccount;
 
+import com.kakaopay.kakaopaydemo.kakaopayaccount.constraint.*;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -24,22 +25,20 @@ public class KakaopayAccount {
     @Enumerated(EnumType.STRING)
     private KakaopayAccountStatus status;
 
+    @Transient
+    private MoneyTransferConstraint constraint;
+
     public KakaopayAccount(Money money) {
         this.balance = money;
         this.status = KakaopayAccountStatus.NORMAL;
+        this.constraint = new MoneyTransferConstraintComposite(
+                new SenderBalanceConstraint(), new LimitedMoneyConstraint(), new ReceiverStatusConstraint()
+        );
     }
 
     public void transferTo(KakaopayAccount receiver, Money money) {
-        if(this.balance.isLessThan(money)) {
-            throw new IllegalArgumentException();
-        }
-
-        if(!money.isLessThan(new Money(10001))) {
-            throw new IllegalArgumentException();
-        }
-
-        if(receiver.isDormancy()) {
-            throw new IllegalStateException();
+        if(this.constraint.isSatisfy(this, receiver, money)) {
+            throw new MoneyTransferConstraintException();
         }
 
         this.balance = this.balance.minus(money);
@@ -50,7 +49,7 @@ public class KakaopayAccount {
         this.balance = this.balance.plus(money);
     }
 
-    private boolean isDormancy() {
+    public boolean isDormancy() {
         return this.status == KakaopayAccountStatus.DORMANCY;
     }
 

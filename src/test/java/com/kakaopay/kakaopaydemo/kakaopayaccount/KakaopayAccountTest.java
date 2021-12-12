@@ -1,5 +1,6 @@
 package com.kakaopay.kakaopaydemo.kakaopayaccount;
 
+import com.kakaopay.kakaopaydemo.kakaopayaccount.constraint.MoneyTransferConstraintException;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,7 +30,7 @@ class KakaopayAccountTest {
 
         // when then
         assertThatThrownBy(() -> sender.transferTo(receiver, new Money(1200)))
-                .isExactlyInstanceOf(IllegalArgumentException.class);
+                .isExactlyInstanceOf(MoneyTransferConstraintException.class);
     }
 
     @Test
@@ -40,7 +41,7 @@ class KakaopayAccountTest {
 
         // when then
         assertThatThrownBy(() -> sender.transferTo(receiver, new Money(10001)))
-                .isExactlyInstanceOf(IllegalArgumentException.class);
+                .isExactlyInstanceOf(MoneyTransferConstraintException.class);
     }
 
     @Test
@@ -52,6 +53,6 @@ class KakaopayAccountTest {
 
         // when then
         assertThatThrownBy(() -> sender.transferTo(receiver, new Money(10000)))
-                .isExactlyInstanceOf(IllegalStateException.class);
+                .isExactlyInstanceOf(MoneyTransferConstraintException.class);
     }
 }
