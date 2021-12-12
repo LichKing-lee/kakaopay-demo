@@ -18,9 +18,18 @@ public class KakaopayAccount {
     private Long id;
 
     @Column(name = "balance")
-    private Money money;
+    private Money balance;
 
     public KakaopayAccount(Money money) {
-        this.money = money;
+        this.balance = money;
+    }
+
+    public void transfer(KakaopayAccount receiver, Money money) {
+        this.balance = this.balance.minus(money);
+        receiver.receive(money);
+    }
+
+    private void receive(Money money) {
+        this.balance = this.balance.plus(money);
     }
 }
